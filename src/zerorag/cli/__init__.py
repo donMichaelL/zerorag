@@ -21,8 +21,12 @@ def get_version() -> str:
 
 @click.group()
 @click.version_option(version=get_version(), prog_name="ZeroRAG")
-def cli():
+@click.option("-v", "--verbose", is_flag=True, help="Enable verbose debug logging.")
+def cli(verbose: bool) -> None:
     """ZeroRAG: A modular, zero-friction RAG pipeline."""
+    log_level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s", force=True)
+    logger.debug("Logging system initialized in CLI.")
 
 
 cli.add_command(zen)

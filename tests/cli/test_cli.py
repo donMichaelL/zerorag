@@ -1,3 +1,6 @@
+import logging
+
+import pytest
 from click.testing import CliRunner
 
 from zerorag.cli import cli
@@ -19,3 +22,13 @@ def test_main_execution_without_args():
 
     assert result.exit_code == 2
     assert "ZeroRAG: A modular, zero-friction RAG pipeline." in result.output
+
+
+def test_verbose_flag_enables_debug_logging(caplog: pytest.LogCaptureFixture) -> None:
+    """Test that the -v flag successfully sets the log level to DEBUG."""
+    runner = CliRunner()
+    with caplog.at_level(logging.DEBUG):
+        result = runner.invoke(cli, ["-v", "zen"])
+
+    assert result.exit_code == 0
+    assert "DEBUG: Logging system initialized in CLI." in result.output
