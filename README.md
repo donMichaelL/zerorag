@@ -10,7 +10,17 @@
 
 </div>
 
-ZeroRAG is a modular, command-line Retrieval-Augmented Generation (RAG) pipeline designed for speed and simplicity. Instead of writing custom boilerplate for every new dataset, ZeroRAG allows you to transform a local folder of complex documents (PDFs, Word files) into a fully embedded vector database with a single command. Once your data is ingested, you can instantly query the database from your terminal to retrieve highly relevant, mathematically scored text chunks—providing the perfect context window for LLM generation.
+ZeroRAG is a modular, command-line Retrieval-Augmented Generation (RAG) pipeline designed for speed and simplicity. Instead of writing custom boilerplate for every new dataset, ZeroRAG allows you to transform a local folder of complex documents (PDFs, Word files) into a fully embedded vector database with a single command. Once your data is ingested, you can instantly query the database from your terminal to retrieve highly relevant text chunks—providing the perfect context window for LLM generation.
+
+
+## 🚀 Install ZeroRAG
+
+ZeroRAG is modular by design. The **core package** includes basic text processing (`.txt`) and a lightweight, file-based vector store. To keep your environment clean, you can opt-in to exactly the extra features your pipeline requires.
+
+```bash
+pip install zerorag
+```
+
 
 ## 🐛 Reporting Bugs & Feature Requests
 
