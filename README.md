@@ -21,6 +21,26 @@ ZeroRAG is modular by design. The **core package** includes basic text processin
 pip install zerorag
 ```
 
+## ⌨️ CLI Commands
+
+ZeroRAG provides the following commands:
+
+### Ingest Documents
+
+This command reads all supported documents from a source directory, splits them into manageable chunks, generates embeddings, and saves the resulting vector database.
+
+**Syntax:**
+
+```bash
+zerorag ingest <SOURCE> [OPTIONS]
+```
+
+**Arguments:**
+* `SOURCE` (Required): The folder containing your documents.
+
+**Options:**
+* `--types` *(Default: `txt`)*: Comma-separated list of file types to parse (e.g., `txt,pdf,docx`).
+*Note: Parsing non-txt files requires installing the matching optional dependencies.*
 
 ## 🐛 Reporting Bugs & Feature Requests
 
