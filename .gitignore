@@ -16,3 +16,6 @@ coverage.xml
 htmlcov/
 .pytest_cache/
 .tox/
+
+# Other files
+TODO.md

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from zerorag.core.loaders import load_documents
+from zerorag.core import load_documents
 
 
 def parse_comma_separated_types(ctx: click.Context, param: click.Parameter, value: str | None) -> list[str]:

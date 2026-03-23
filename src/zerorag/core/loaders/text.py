@@ -13,6 +13,7 @@ class TextDirectoryLoader:
             glob="**/*.txt",
             loader_cls=TextLoader,
             silent_errors=True,
+            show_progress=False,
             use_multithreading=True,
         )
         return loader.load()

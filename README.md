@@ -28,6 +28,7 @@ Extend the core functionality to support additional file formats:
 | Format | Installation Command |
 | :--- | :--- |
 | **PDF** | `pip install "zerorag[pdf]"` |
+| **Word** | `pip install "zerorag[docx]"` |
 
 
 ## ⌨️ CLI Commands
