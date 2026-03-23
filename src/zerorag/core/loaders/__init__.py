@@ -4,6 +4,7 @@ from pathlib import Path
 from langchain_core.documents import Document
 
 from .base import DocumentLoaderStrategy
+from .pdf import PDFDirectoryLoader
 from .text import TextDirectoryLoader
 
 logger = logging.getLogger(__name__)
@@ -11,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 LOADER_REGISTRY: dict[str, type[DocumentLoaderStrategy]] = {
     "txt": TextDirectoryLoader,
+    "pdf": PDFDirectoryLoader,
 }
 
 

@@ -20,6 +20,15 @@ ZeroRAG is modular by design. The **core package** includes basic text processin
 ```bash
 pip install zerorag
 ```
+### Optional Dependencies
+
+#### 📄 Document Parsers
+Extend the core functionality to support additional file formats:
+
+| Format | Installation Command |
+| :--- | :--- |
+| **PDF** | `pip install "zerorag[pdf]"` |
+
 
 ## ⌨️ CLI Commands
 

@@ -37,6 +37,11 @@ changelog = "https://github.com/donMichaelL/zerorag/blob/master/CHANGELOG.md"
 [project.scripts]
 zerorag = "zerorag.cli:cli"
 
+[project.optional-dependencies]
+pdf = [
+    "pypdf>=6.9.1",
+]
+
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
@@ -68,6 +73,7 @@ env_list = ["3.12", "3.13", "3.14"]
 [tool.tox.env_run_base]
 description = "run the tests with pytest under {base_python}"
 dependency_groups = ["test"]
+extras = ["pdf"]
 commands = [
     ["pytest", "{posargs:tests}"],
 ]
