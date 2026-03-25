@@ -57,16 +57,17 @@ class TestIngestCommand:
 
         assert result.exit_code == 0
         assert "Initializing ZeroRAG Ingestion" in result.output
+        assert "No pages found" in result.output
 
     def test_ingest_default_types(self, runner: CliRunner, tmp_path: Path) -> None:
         """Test that omitting --types correctly prints the default."""
         result = runner.invoke(ingest, [str(tmp_path)])
 
         assert result.exit_code == 0
-        assert "Target Formats   : [txt]" in result.output
+        assert "Formats   : [txt]" in result.output
 
     def test_ingest_custom_types(self, runner: CliRunner, tmp_path: Path) -> None:
         """Test passing custom types with messy spacing and casing."""
         result = runner.invoke(ingest, [str(tmp_path), "--types", "TXT, pdf,  Csv "])
 
-        assert "Target Formats   : [txt, pdf, csv]" in result.output
+        assert "Formats   : [txt, pdf, csv]" in result.output

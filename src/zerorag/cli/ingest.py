@@ -38,12 +38,18 @@ def ingest(source: Path, types: list[str], chunk_size: int, chunk_overlap: int) 
     """Ingest documents from a folder and build a vector store."""
 
     click.secho("🚀 Initializing ZeroRAG Ingestion...", fg="blue", bold=True)
-    click.echo(f"📂 Source Directory : {source.absolute()}")
-    click.echo(f"📄 Target Formats   : [{', '.join(types)}]")
-    click.echo("\n... Scanning and loading documents ...")
+    click.echo(f"   Source    : {source.absolute()}")
+    click.echo(f"   Formats   : [{', '.join(types)}]")
+    click.echo()
 
+    click.echo("📥 Loading documents...")
     documents = load_documents(source, types)
 
-    click.echo("... Splitting documents into chunks ...")
-    chunks = split_documents(documents, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    click.echo(f"✅ Created {len(chunks)} chunks from {len(documents)} documents.")
+    if not documents:
+        click.secho("⚠️ No pages found. Nothing to split.", fg="yellow")
+        return
+
+    click.echo("✂️  Chunking documents...")
+    _chunks = split_documents(documents, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+
+    click.secho("✅ Ingestion complete!", fg="green", bold=True)

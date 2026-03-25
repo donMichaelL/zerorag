@@ -39,11 +39,11 @@ def load_documents(source: Path, types: list[str]) -> list[Document]:
             logger.warning(f"Skipping '{file_type}': Unsupported type")
             continue
 
-        logger.info(f"Scanning for .{file_type} files in {source.absolute()}...")
+        logger.debug(f"Scanning for .{file_type} files in {source.absolute()}...")
 
         loader = loader_cls()
         loaded_docs = loader.load(source)
-        logger.info(f"Loaded {len(loaded_docs)} .{file_type} documents")
+        logger.debug(f"Loaded {len(loaded_docs)} pages from .{file_type} files")
         documents.extend(loaded_docs)
 
     return documents

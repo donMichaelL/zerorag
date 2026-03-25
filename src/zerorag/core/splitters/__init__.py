@@ -41,7 +41,7 @@ def split_documents(
         chunk_overlap=chunk_overlap,
     )
     chunks = splitter.split(documents)
-    logger.info(f"Split {len(documents)} documents into {len(chunks)} chunks")
+    logger.debug(f"Split {len(documents)} pages into {len(chunks)} chunks")
 
     return chunks
 
