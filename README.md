@@ -50,6 +50,9 @@ zerorag ingest <SOURCE> [OPTIONS]
 
 **Options:**
 * `--types` *(Default: `txt`)*: Comma-separated list of file types to parse (e.g., `txt,pdf,docx`).
+* `--chunk-size` *(Default: `1200`)*: Maximum number of characters per chunk.
+* `--chunk-overlap` *(Default: `300`)*: Number of overlapping characters between consecutive chunks.
+
 *Note: Parsing non-txt files requires installing the matching optional dependencies.*
 
 ## 🐛 Reporting Bugs & Feature Requests
