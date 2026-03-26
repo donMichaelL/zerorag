@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from zerorag.core import load_documents, split_documents
+from zerorag.core import get_embeddings, load_documents, split_documents
 
 
 def parse_comma_separated_types(ctx: click.Context, param: click.Parameter, value: str | None) -> list[str]:
@@ -51,5 +51,8 @@ def ingest(source: Path, types: list[str], chunk_size: int, chunk_overlap: int) 
 
     click.echo("✂️  Chunking documents...")
     _chunks = split_documents(documents, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+
+    click.echo("🔢 Initializing embeddings...")
+    _embeddings = get_embeddings()
 
     click.secho("✅ Ingestion complete!", fg="green", bold=True)

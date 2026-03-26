@@ -55,6 +55,8 @@ zerorag ingest <SOURCE> [OPTIONS]
 
 *Note: Parsing non-txt files requires installing the matching optional dependencies.*
 
+> **Embeddings:** The ingest command automatically generates embeddings using [FastEmbed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`), a lightweight ONNX-based engine that runs locally with no API key required. The model is downloaded on first use.
+
 ## 🐛 Reporting Bugs & Feature Requests
 
 We are constantly looking to improve ZeroRAG. If you encounter a bug or have an idea for a new feature (like a new vector store or document loader), please let us know!

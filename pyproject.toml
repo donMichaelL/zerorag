@@ -12,6 +12,7 @@ maintainers = [
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.3.1",
+    "fastembed>=0.6.1",
     "langchain>=1.2.13",
     "langchain-community>=0.4.1",
 ]
@@ -24,7 +25,6 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14",
   "Intended Audience :: Developers",
   "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
@@ -71,7 +71,7 @@ addopts = "--cov=zerorag --cov-report=term-missing --cov-report=html --cov-repor
 
 [tool.tox]
 requires = ["tox>=4", "tox-uv>=1.0"]
-env_list = ["3.12", "3.13", "3.14"]
+env_list = ["3.12", "3.13"]
 
 [tool.tox.env_run_base]
 description = "run the tests with pytest under {base_python}"
