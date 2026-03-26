@@ -30,6 +30,13 @@ Extend the core functionality to support additional file formats:
 | **PDF** | `pip install "zerorag[pdf]"` |
 | **Word** | `pip install "zerorag[docx]"` |
 
+#### 🗄️ Vector Stores
+Use a different vector store backend:
+
+| Backend | Installation Command |
+| :--- | :--- |
+| **ChromaDB** | `pip install "zerorag[chromadb]"` |
+
 
 ## ⌨️ CLI Commands
 
@@ -52,10 +59,30 @@ zerorag ingest <SOURCE> [OPTIONS]
 * `--types` *(Default: `txt`)*: Comma-separated list of file types to parse (e.g., `txt,pdf,docx`).
 * `--chunk-size` *(Default: `1200`)*: Maximum number of characters per chunk.
 * `--chunk-overlap` *(Default: `300`)*: Number of overlapping characters between consecutive chunks.
+* `--store` *(Default: `inmemory`)*: Vector store backend (`inmemory` or `chromadb`).
+* `--store-dir` *(Default: `zerorag_store`)*: Directory to persist the vector store.
 
 *Note: Parsing non-txt files requires installing the matching optional dependencies.*
 
 > **Embeddings:** The ingest command automatically generates embeddings using [FastEmbed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`), a lightweight ONNX-based engine that runs locally with no API key required. The model is downloaded on first use.
+
+**Example:**
+
+```bash
+$ zerorag ingest ./docs --types txt,pdf --store-dir ./my_store
+
+🚀 Initializing ZeroRAG Ingestion...
+   Source    : /home/user/docs
+   Formats   : [txt, pdf]
+   Store     : inmemory
+   Store Dir : /home/user/my_store
+
+📥 Loading documents...
+✂️ Chunking documents...
+🔢 Initializing embeddings...
+💾 Storing vectors...
+✅ Ingestion complete!
+```
 
 ## 🐛 Reporting Bugs & Feature Requests
 

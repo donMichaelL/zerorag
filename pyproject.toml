@@ -44,6 +44,10 @@ pdf = [
 docx = [
     "docx2txt>=0.9",
 ]
+chromadb = [
+    "chromadb>=1.0.0",
+    "langchain-chroma>=0.2.0",
+]
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
