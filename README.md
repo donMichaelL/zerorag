@@ -84,6 +84,47 @@ $ zerorag ingest ./docs --types txt,pdf --store-dir ./my_store
 ✅ Ingestion complete!
 ```
 
+### Query Documents
+
+This command runs a similarity search against a vector store and returns the most relevant document chunks.
+
+**Syntax:**
+
+```bash
+zerorag query <QUERY> [OPTIONS]
+```
+
+**Arguments:**
+* `QUERY` (Required): The search query.
+
+**Options:**
+* `--store` *(Default: `inmemory`)*: Vector store backend to load (`inmemory` or `chromadb`).
+* `--store-dir` *(Default: `zerorag_store`)*: Directory where the vector store was persisted during ingestion.
+* `--k` *(Default: `5`)*: Number of top matching chunks to return.
+
+**Example:**
+
+```bash
+$ zerorag query "What are the main benefits of RAG?" --store-dir ./my_store --k 2
+
+🔍 Querying vector store...
+   Store     : inmemory
+   Store Dir : /home/user/my_store
+   Top K     : 2
+
+📄 Result 1:
+   Source: intro.pdf | Page: 2
+   RAG combines retrieval with generation to ground LLM responses in
+   real data, reducing hallucinations and improving factual accuracy...
+
+📄 Result 2:
+   Source: overview.txt
+   The primary benefits include reduced hallucination, up-to-date answers
+   from private data, and full traceability back to source documents...
+
+✅ Query complete!
+```
+
 ## 🐛 Reporting Bugs & Feature Requests
 
 We are constantly looking to improve ZeroRAG. If you encounter a bug or have an idea for a new feature (like a new vector store or document loader), please let us know!

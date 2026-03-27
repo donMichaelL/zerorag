@@ -3,6 +3,7 @@ from pathlib import Path
 
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
+from langchain_core.vectorstores import VectorStore
 
 from .base import VectorStoreStrategy
 from .chromadb import ChromaDBVectorStoreBackend
@@ -42,4 +43,26 @@ def store_documents(
     logger.debug(f"Stored {len(documents)} documents in '{strategy}' vector store at {store_dir}")
 
 
-__all__ = ["store_documents"]
+def load_vectorstore(
+    embeddings: Embeddings,
+    store_dir: Path,
+    strategy: str = "inmemory",
+) -> VectorStore:
+    """
+    Load a persisted vector store from disk.
+
+    Args:
+        embeddings: A LangChain Embeddings instance for generating vectors.
+        store_dir: Directory where the vector store was persisted.
+        strategy: The vector store backend to use (must be a key in VECTORSTORE_REGISTRY).
+    """
+    backend_cls = VECTORSTORE_REGISTRY.get(strategy)
+    if not backend_cls:
+        logger.warning(f"Unknown vector store strategy '{strategy}', falling back to 'inmemory'")
+        backend_cls = VECTORSTORE_REGISTRY["inmemory"]
+
+    backend = backend_cls()
+    return backend.load(embeddings, store_dir)
+
+
+__all__ = ["store_documents", "load_vectorstore"]

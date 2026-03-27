@@ -38,3 +38,11 @@ class TestChromaDBVectorStoreBackend:
         backend.store([Document(page_content="hello")], MagicMock(spec=Embeddings), store_dir)
 
         assert store_dir.exists()
+
+    def test_load_raises_missing_dependency_error(self, tmp_path):
+        """Test that load raises MissingDependencyError when langchain-chroma is not installed."""
+        with patch.dict("sys.modules", {"langchain_chroma": None}):
+            backend = ChromaDBVectorStoreBackend()
+
+            with pytest.raises(MissingDependencyError, match="ChromaDB support requires extra dependencies"):
+                backend.load(MagicMock(spec=Embeddings), tmp_path)

@@ -52,3 +52,27 @@ class TestInMemoryVectorStoreBackend:
         backend.store([Document(page_content="hello")], MagicMock(spec=Embeddings), store_dir)
 
         assert store_dir.exists()
+
+    @patch("zerorag.core.vectorstores.inmemory.InMemoryVectorStore")
+    def test_load_calls_load_with_correct_path(self, mock_vs_cls, tmp_path):
+        """Test that load() calls InMemoryVectorStore.load with the correct file path."""
+        mock_vs_cls.load.return_value = MagicMock()
+        embeddings = MagicMock(spec=Embeddings)
+
+        backend = InMemoryVectorStoreBackend()
+        backend.load(embeddings, tmp_path)
+
+        expected_path = str(tmp_path / STORE_FILENAME)
+        mock_vs_cls.load.assert_called_once_with(expected_path, embeddings)
+
+    @patch("zerorag.core.vectorstores.inmemory.InMemoryVectorStore")
+    def test_load_returns_vector_store(self, mock_vs_cls, tmp_path):
+        """Test that load() returns the loaded vector store instance."""
+        mock_instance = MagicMock()
+        mock_vs_cls.load.return_value = mock_instance
+        embeddings = MagicMock(spec=Embeddings)
+
+        backend = InMemoryVectorStoreBackend()
+        result = backend.load(embeddings, tmp_path)
+
+        assert result is mock_instance

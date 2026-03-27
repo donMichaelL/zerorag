@@ -14,3 +14,6 @@ class InMemoryVectorStoreBackend:
         store_dir.mkdir(parents=True, exist_ok=True)
         vector_store = InMemoryVectorStore.from_documents(documents, embedding=embeddings)
         vector_store.dump(str(store_dir / STORE_FILENAME))
+
+    def load(self, embeddings: Embeddings, store_dir: Path) -> InMemoryVectorStore:
+        return InMemoryVectorStore.load(str(store_dir / STORE_FILENAME), embeddings)

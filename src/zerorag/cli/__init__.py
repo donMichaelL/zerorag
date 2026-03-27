@@ -4,6 +4,7 @@ from importlib.metadata import PackageNotFoundError, version
 import click
 
 from .ingest import ingest
+from .query import query
 from .zen import zen
 
 logger = logging.getLogger(__name__)
@@ -25,3 +26,4 @@ def cli():
 
 cli.add_command(zen)
 cli.add_command(ingest)
+cli.add_command(query)
