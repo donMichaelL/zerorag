@@ -107,3 +107,20 @@ class TestQueryCommand:
         assert "Store     : chromadb" in result.output
         mock_load.assert_called_once()
         assert mock_load.call_args[1]["strategy"] == "chromadb"
+
+    @patch("zerorag.cli.query.retrieve_documents")
+    @patch("zerorag.cli.query.load_vectorstore")
+    @patch("zerorag.cli.query.get_embeddings")
+    def test_query_full_flag_prints_entire_content(
+        self, mock_embed, mock_load, mock_retrieve, runner: CliRunner, tmp_path: Path
+    ) -> None:
+        """Test that --full prints the complete chunk content instead of truncating."""
+        long_content = "A" * 300
+        mock_embed.return_value = MagicMock()
+        mock_load.return_value = MagicMock()
+        mock_retrieve.return_value = [Document(page_content=long_content, metadata={"source": "doc.txt"})]
+
+        result = runner.invoke(query, ["some query", "--store-dir", str(tmp_path), "--full"])
+
+        assert result.exit_code == 0
+        assert long_content in result.output

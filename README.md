@@ -101,6 +101,7 @@ zerorag query <QUERY> [OPTIONS]
 * `--store` *(Default: `inmemory`)*: Vector store backend to load (`inmemory` or `chromadb`).
 * `--store-dir` *(Default: `zerorag_store`)*: Directory where the vector store was persisted during ingestion.
 * `--k` *(Default: `5`)*: Number of top matching chunks to return.
+* `--full`: Print the full content of each chunk instead of a truncated preview.
 
 **Example:**
 

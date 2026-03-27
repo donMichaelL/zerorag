@@ -29,7 +29,13 @@ from zerorag.core import get_embeddings, load_vectorstore, retrieve_documents
     show_default=True,
     help="Number of top matching chunks to return.",
 )
-def query(query: str, store_strategy: str, store_dir: Path, k: int) -> None:
+@click.option(
+    "--full",
+    is_flag=True,
+    default=False,
+    help="Print the full content of each chunk instead of a truncated preview.",
+)
+def query(query: str, store_strategy: str, store_dir: Path, k: int, full: bool) -> None:
     """Query a vector store and retrieve relevant document chunks."""
 
     click.secho("🔍 Querying vector store...", fg="blue", bold=True)
@@ -51,7 +57,8 @@ def query(query: str, store_strategy: str, store_dir: Path, k: int) -> None:
         click.secho(f"📄 Result {i}:", fg="cyan", bold=True)
         source = doc.metadata.get("source", "Unknown")
         click.echo(f"   Source: {source}")
-        click.echo(f"   {doc.page_content[:200]}...")
+        content = doc.page_content if full else f"{doc.page_content[:200]}..."
+        click.echo(f"   {content}")
         click.echo()
 
     click.secho("✅ Query complete!", fg="green", bold=True)
