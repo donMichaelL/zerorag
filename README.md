@@ -46,6 +46,14 @@ Use a different vector store backend:
 | :--- | :--- |
 | **ChromaDB** | `pip install "zerorag[chromadb]"` |
 
+#### 🤖 LLMs
+Use an LLM for answer generation with the `ask` command:
+
+| Provider | Installation Command |
+| :--- | :--- |
+| **OpenAI** | `pip install "zerorag[openai]"` |
+
+> **Note:** OpenAI LLMs require an API key. Set the `OPENAI_API_KEY` environment variable before use. See [how to create an API key](https://platform.openai.com/api-keys).
 
 ## ⌨️ CLI Commands
 
@@ -68,7 +76,7 @@ zerorag ingest <SOURCE> [OPTIONS]
 * `--types` *(Default: `txt`)*: Comma-separated list of file types to parse (e.g., `txt,pdf,docx`).
 * `--chunk-size` *(Default: `1200`)*: Maximum number of characters per chunk.
 * `--chunk-overlap` *(Default: `300`)*: Number of overlapping characters between consecutive chunks.
-* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`).
+* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`). The default uses [FastEmbed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`) locally with no API key required.
 * `--store` *(Default: `inmemory`)*: Vector store backend (`inmemory` or `chromadb`).
 * `--store-dir` *(Default: `zerorag_store`)*: Directory to persist the vector store.
 
@@ -107,7 +115,7 @@ zerorag query <QUERY> [OPTIONS]
 * `QUERY` (Required): The search query.
 
 **Options:**
-* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`). Must match the provider used during ingestion.
+* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`). The default uses [FastEmbed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`) locally with no API key required. Must match the provider used during ingestion.
 * `--store` *(Default: `inmemory`)*: Vector store backend to load (`inmemory` or `chromadb`).
 * `--store-dir` *(Default: `zerorag_store`)*: Directory where the vector store was persisted during ingestion.
 * `--k` *(Default: `5`)*: Number of top matching chunks to return.
@@ -134,6 +142,53 @@ $ zerorag query "What are the main benefits of RAG?" --store-dir ./my_store --k 
    from private data, and full traceability back to source documents...
 
 ✅ Query complete!
+```
+
+### Ask a Question
+
+This command retrieves relevant chunks from a vector store and sends them alongside your question to an LLM, returning a grounded answer based on your documents.
+
+**Syntax:**
+
+```bash
+zerorag ask <QUESTION> [OPTIONS]
+```
+
+**Arguments:**
+* `QUESTION` (Required): The question to ask.
+
+**Options:**
+* `--llm` *(Default: `openai-mini`)*: LLM to use for generation (`openai-mini` or `openai`).
+* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`). The default uses [FastEmbed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`) locally with no API key required. Must match the provider used during ingestion.
+* `--store` *(Default: `inmemory`)*: Vector store backend to load (`inmemory` or `chromadb`).
+* `--store-dir` *(Default: `zerorag_store`)*: Directory where the vector store was persisted during ingestion.
+* `--k` *(Default: `5`)*: Number of top matching chunks to retrieve as context.
+
+*Note: The `ask` command requires installing the OpenAI optional dependency.*
+
+**Example:**
+
+```bash
+$ zerorag ask "What are the main benefits of RAG?" --store-dir ./my_store
+
+🤖 Asking LLM...
+   Question  : What are the main benefits of RAG?
+   LLM       : openai-mini
+   Embeddings: fastembed
+   Store     : inmemory
+   Store Dir : /home/user/my_store
+   Top K     : 5
+
+🔍 Retrieving relevant chunks...
+💬 Generating answer...
+
+📝 Answer:
+   Based on your documents, the main benefits of RAG are:
+   1. Reduced hallucination by grounding responses in real data
+   2. Up-to-date answers from private data sources
+   3. Full traceability back to source documents
+
+✅ Done!
 ```
 
 ## 🐛 Reporting Bugs & Feature Requests
