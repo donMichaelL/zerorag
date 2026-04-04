@@ -48,6 +48,9 @@ chromadb = [
     "chromadb>=1.0.0",
     "langchain-chroma>=0.2.0",
 ]
+openai = [
+    "langchain-openai>=1.1.12",
+]
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
@@ -80,7 +83,7 @@ env_list = ["3.12", "3.13"]
 [tool.tox.env_run_base]
 description = "run the tests with pytest under {base_python}"
 dependency_groups = ["test"]
-extras = ["pdf", "docx"]
+extras = ["pdf", "docx", "openai"]
 commands = [
     ["pytest", "{posargs:tests}"],
 ]

@@ -30,6 +30,15 @@ Extend the core functionality to support additional file formats:
 | **PDF** | `pip install "zerorag[pdf]"` |
 | **Word** | `pip install "zerorag[docx]"` |
 
+#### 🧠 Embeddings
+Use a different embedding provider:
+
+| Provider | Installation Command |
+| :--- | :--- |
+| **OpenAI** | `pip install "zerorag[openai]"` |
+
+> **Note:** OpenAI embeddings require an API key. Set the `OPENAI_API_KEY` environment variable before use. See [how to create an API key](https://platform.openai.com/api-keys).
+
 #### 🗄️ Vector Stores
 Use a different vector store backend:
 
@@ -59,21 +68,21 @@ zerorag ingest <SOURCE> [OPTIONS]
 * `--types` *(Default: `txt`)*: Comma-separated list of file types to parse (e.g., `txt,pdf,docx`).
 * `--chunk-size` *(Default: `1200`)*: Maximum number of characters per chunk.
 * `--chunk-overlap` *(Default: `300`)*: Number of overlapping characters between consecutive chunks.
+* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`).
 * `--store` *(Default: `inmemory`)*: Vector store backend (`inmemory` or `chromadb`).
 * `--store-dir` *(Default: `zerorag_store`)*: Directory to persist the vector store.
 
 *Note: Parsing non-txt files requires installing the matching optional dependencies.*
 
-> **Embeddings:** The ingest command automatically generates embeddings using [FastEmbed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`), a lightweight ONNX-based engine that runs locally with no API key required. The model is downloaded on first use.
-
 **Example:**
 
 ```bash
-$ zerorag ingest ./docs --types txt,pdf --store-dir ./my_store
+$ zerorag ingest ./docs --types txt,pdf --embeddings openai-small --store-dir ./my_store
 
 🚀 Initializing ZeroRAG Ingestion...
    Source    : /home/user/docs
    Formats   : [txt, pdf]
+   Embeddings: openai-small
    Store     : inmemory
    Store Dir : /home/user/my_store
 
@@ -98,6 +107,7 @@ zerorag query <QUERY> [OPTIONS]
 * `QUERY` (Required): The search query.
 
 **Options:**
+* `--embeddings` *(Default: `fastembed`)*: Embedding provider to use (`fastembed`, `openai-small`, or `openai-large`). Must match the provider used during ingestion.
 * `--store` *(Default: `inmemory`)*: Vector store backend to load (`inmemory` or `chromadb`).
 * `--store-dir` *(Default: `zerorag_store`)*: Directory where the vector store was persisted during ingestion.
 * `--k` *(Default: `5`)*: Number of top matching chunks to return.

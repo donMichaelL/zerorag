@@ -108,6 +108,29 @@ class TestQueryCommand:
         mock_load.assert_called_once()
         assert mock_load.call_args[1]["strategy"] == "chromadb"
 
+    def test_query_invalid_embeddings_strategy_fails(self, runner: CliRunner, tmp_path: Path) -> None:
+        """Test that an invalid --embeddings value is rejected by Click's Choice."""
+        result = runner.invoke(query, ["some query", "--store-dir", str(tmp_path), "--embeddings", "invalid"])
+
+        assert result.exit_code == 2
+        assert "Invalid value" in result.output
+
+    @patch("zerorag.cli.query.retrieve_documents")
+    @patch("zerorag.cli.query.load_vectorstore")
+    @patch("zerorag.cli.query.get_embeddings")
+    def test_query_passes_embeddings_strategy(
+        self, mock_embed, mock_load, mock_retrieve, runner: CliRunner, tmp_path: Path
+    ) -> None:
+        """Test that --embeddings flag is passed through to get_embeddings."""
+        mock_embed.return_value = MagicMock()
+        mock_load.return_value = MagicMock()
+        mock_retrieve.return_value = []
+
+        result = runner.invoke(query, ["some query", "--store-dir", str(tmp_path), "--embeddings", "openai-large"])
+
+        assert result.exit_code == 0
+        mock_embed.assert_called_once_with(strategy="openai-large")
+
     @patch("zerorag.cli.query.retrieve_documents")
     @patch("zerorag.cli.query.load_vectorstore")
     @patch("zerorag.cli.query.get_embeddings")

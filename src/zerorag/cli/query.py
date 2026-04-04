@@ -8,6 +8,14 @@ from zerorag.core import get_embeddings, load_vectorstore, retrieve_documents
 @click.command()
 @click.argument("query")
 @click.option(
+    "--embeddings",
+    "embeddings_strategy",
+    default="fastembed",
+    type=click.Choice(["fastembed", "openai-small", "openai-large"], case_sensitive=False),
+    show_default=True,
+    help="Embedding provider to use. Must match the provider used during ingestion.",
+)
+@click.option(
     "--store",
     "store_strategy",
     default="inmemory",
@@ -35,7 +43,7 @@ from zerorag.core import get_embeddings, load_vectorstore, retrieve_documents
     default=False,
     help="Print the full content of each chunk instead of a truncated preview.",
 )
-def query(query: str, store_strategy: str, store_dir: Path, k: int, full: bool) -> None:
+def query(query: str, embeddings_strategy: str, store_strategy: str, store_dir: Path, k: int, full: bool) -> None:
     """Query a vector store and retrieve relevant document chunks."""
 
     click.secho("🔍 Querying vector store...", fg="blue", bold=True)
@@ -44,7 +52,7 @@ def query(query: str, store_strategy: str, store_dir: Path, k: int, full: bool) 
     click.echo(f"   Top K     : {k}")
     click.echo()
 
-    embeddings = get_embeddings()
+    embeddings = get_embeddings(strategy=embeddings_strategy)
     vector_store = load_vectorstore(embeddings, store_dir, strategy=store_strategy)
 
     results = retrieve_documents(query, vector_store, k=k)

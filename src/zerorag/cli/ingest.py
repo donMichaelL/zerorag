@@ -35,6 +35,14 @@ def parse_comma_separated_types(ctx: click.Context, param: click.Parameter, valu
     help="Number of overlapping characters between consecutive chunks.",
 )
 @click.option(
+    "--embeddings",
+    "embeddings_strategy",
+    default="fastembed",
+    type=click.Choice(["fastembed", "openai-small", "openai-large"], case_sensitive=False),
+    show_default=True,
+    help="Embedding provider to use.",
+)
+@click.option(
     "--store",
     "store_strategy",
     default="inmemory",
@@ -50,13 +58,20 @@ def parse_comma_separated_types(ctx: click.Context, param: click.Parameter, valu
     help="Directory to persist the vector store.",
 )
 def ingest(
-    source: Path, types: list[str], chunk_size: int, chunk_overlap: int, store_strategy: str, store_dir: Path
+    source: Path,
+    types: list[str],
+    chunk_size: int,
+    chunk_overlap: int,
+    embeddings_strategy: str,
+    store_strategy: str,
+    store_dir: Path,
 ) -> None:
     """Ingest documents from a folder and build a vector store."""
 
     click.secho("🚀 Initializing ZeroRAG Ingestion...", fg="blue", bold=True)
     click.echo(f"   Source    : {source.absolute()}")
     click.echo(f"   Formats   : [{', '.join(types)}]")
+    click.echo(f"   Embeddings: {embeddings_strategy}")
     click.echo(f"   Store     : {store_strategy}")
     click.echo(f"   Store Dir : {store_dir.absolute()}")
     click.echo()
@@ -72,7 +87,7 @@ def ingest(
     chunks = split_documents(documents, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 
     click.echo("🔢 Initializing embeddings...")
-    embeddings = get_embeddings()
+    embeddings = get_embeddings(strategy=embeddings_strategy)
 
     click.echo("💾 Storing vectors...")
     store_documents(chunks, embeddings, store_dir, strategy=store_strategy)

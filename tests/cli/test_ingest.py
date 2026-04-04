@@ -133,3 +133,35 @@ class TestIngestCommand:
         mock_store.assert_called_once()
         call_kwargs = mock_store.call_args
         assert call_kwargs[1]["strategy"] == "chromadb"
+
+    def test_ingest_default_embeddings(self, runner: CliRunner, tmp_path: Path) -> None:
+        """Test that default embeddings strategy is displayed correctly."""
+        result = runner.invoke(ingest, [str(tmp_path)])
+
+        assert result.exit_code == 0
+        assert "Embeddings: fastembed" in result.output
+
+    def test_ingest_invalid_embeddings_strategy_fails(self, runner: CliRunner, tmp_path: Path) -> None:
+        """Test that an invalid --embeddings value is rejected by Click's Choice."""
+        result = runner.invoke(ingest, [str(tmp_path), "--embeddings", "invalid"])
+
+        assert result.exit_code == 2
+        assert "Invalid value" in result.output
+
+    @patch("zerorag.cli.ingest.store_documents")
+    @patch("zerorag.cli.ingest.get_embeddings")
+    @patch("zerorag.cli.ingest.split_documents")
+    @patch("zerorag.cli.ingest.load_documents")
+    def test_ingest_passes_embeddings_strategy(
+        self, mock_load, mock_split, mock_embed, mock_store, runner: CliRunner, tmp_path: Path
+    ) -> None:
+        """Test that --embeddings flag is passed through to get_embeddings."""
+        mock_load.return_value = [Document(page_content="hello")]
+        mock_split.return_value = [Document(page_content="hello")]
+        mock_embed.return_value = MagicMock()
+
+        result = runner.invoke(ingest, [str(tmp_path), "--embeddings", "openai-small"])
+
+        assert result.exit_code == 0
+        assert "Embeddings: openai-small" in result.output
+        mock_embed.assert_called_once_with(strategy="openai-small")
