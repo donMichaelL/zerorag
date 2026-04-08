@@ -12,7 +12,7 @@ class DocxDirectoryLoader:
 
     def load(self, target_path: Path) -> list[Document]:
         if importlib.util.find_spec("docx2txt") is None:
-            raise MissingDependencyError("Word support is missing. Run:  pip install 'zerorag[docx]'")
+            raise MissingDependencyError("Word support is missing. Run: pip install 'zerorag[docx]'")
 
         from langchain_community.document_loaders import Docx2txtLoader
 

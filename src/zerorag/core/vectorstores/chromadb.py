@@ -14,9 +14,7 @@ class ChromaDBVectorStoreBackend:
         try:
             from langchain_chroma import Chroma
         except ImportError as err:
-            raise MissingDependencyError(
-                'ChromaDB support requires extra dependencies. Install them with: pip install "zerorag[chromadb]"'
-            ) from err
+            raise MissingDependencyError("ChromaDB support is missing. Run: pip install 'zerorag[chromadb]'") from err
 
         store_dir.mkdir(parents=True, exist_ok=True)
         Chroma.from_documents(documents, embedding=embeddings, persist_directory=str(store_dir))
@@ -25,8 +23,6 @@ class ChromaDBVectorStoreBackend:
         try:
             from langchain_chroma import Chroma
         except ImportError as err:
-            raise MissingDependencyError(
-                'ChromaDB support requires extra dependencies. Install them with: pip install "zerorag[chromadb]"'
-            ) from err
+            raise MissingDependencyError("ChromaDB support is missing. Run: pip install 'zerorag[chromadb]'") from err
 
         return Chroma(embedding_function=embeddings, persist_directory=str(store_dir))

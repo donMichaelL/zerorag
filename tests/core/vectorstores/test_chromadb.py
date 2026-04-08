@@ -25,7 +25,7 @@ class TestChromaDBVectorStoreBackend:
         with patch.dict("sys.modules", {"langchain_chroma": None}):
             backend = ChromaDBVectorStoreBackend()
 
-            with pytest.raises(MissingDependencyError, match="ChromaDB support requires extra dependencies"):
+            with pytest.raises(MissingDependencyError, match="ChromaDB support is missing"):
                 backend.store([Document(page_content="hello")], MagicMock(spec=Embeddings), tmp_path)
 
     @patch("zerorag.core.vectorstores.chromadb.ChromaDBVectorStoreBackend.store")
@@ -44,5 +44,5 @@ class TestChromaDBVectorStoreBackend:
         with patch.dict("sys.modules", {"langchain_chroma": None}):
             backend = ChromaDBVectorStoreBackend()
 
-            with pytest.raises(MissingDependencyError, match="ChromaDB support requires extra dependencies"):
+            with pytest.raises(MissingDependencyError, match="ChromaDB support is missing"):
                 backend.load(MagicMock(spec=Embeddings), tmp_path)
